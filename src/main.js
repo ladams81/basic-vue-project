@@ -2,19 +2,32 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import Web3 from 'web3'
 import router from './router'
 
 Vue.config.productionTip = false
 
-window.addEventListener('load', function () {
-  if (typeof web3 !== 'undefined') {
-    console.log('Web3 injected browser: OK.')
-    window.web3 = new Web3(window.web3.currentProvider)
+window.addEventListener('load', async function () {
+  if (window.ethereum) {
+    try {
+      const address = await window.ethereum.enable()
+      console.log('connected to Metamask at address ' + address)
+      const obj = {
+        connectedStatus: true,
+        status: '',
+        address: address
+      }
+      return obj
+    } catch (error) {
+      return {
+        connectedStatus: false,
+        status: '🦊 Connect to Metamask using the button on the top right.'
+      }
+    }
   } else {
-    console.log('Web3 injected browser: Fail. You should consider trying MetaMask.')
-    // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-    window.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8286'))
+    return {
+      connectedStatus: false,
+      status: '🦊 You must install Metamask into your browser: https://metamask.io/download.html'
+    }
   }
 
   /* eslint-disable no-new */
