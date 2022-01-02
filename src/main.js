@@ -18,10 +18,11 @@ window.addEventListener('load', async function () {
       }
       return obj
     } catch (error) {
-      return {
-        connectedStatus: false,
-        status: '🦊 Connect to Metamask using the button on the top right.'
-      }
+      console.log('Connect to Metamask using the button on the top right')
+      // return {
+      //   connectedStatus: false,
+      //   status: '🦊 Connect to Metamask using the button on the top right.'
+      // }
     }
   } else {
     return {
